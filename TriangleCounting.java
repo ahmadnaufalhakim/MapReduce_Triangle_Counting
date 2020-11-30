@@ -38,7 +38,7 @@ public class TriangleCounting extends Configured implements Tool {
             }
             // Format > key : value -> v u,w
             for (int u = 0; u < valuesCopy.size(); u++) {
-                context.write(new Text("999"), new Text(valuesCopy.size()));
+                context.write(new Text("999"), new Text(Int.toString(valuesCopy.size())));
                 for (int w = u; w < valuesCopy.size(); w++) {
                     int compare = valuesCopy.get(u).compareTo(valuesCopy.get(w));
                     if (compare < 0) {
