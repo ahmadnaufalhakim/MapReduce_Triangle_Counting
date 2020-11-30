@@ -87,7 +87,7 @@ public class TriangleCounting extends Configured implements Tool {
             boolean valid = false;
             for (String value : valueSet) {
                 if (!value.equals("$")){
-                    ++count_sum;
+                    count_sum++;
                 } else {
                     valid = true;
                 }
