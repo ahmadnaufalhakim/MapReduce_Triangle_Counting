@@ -114,7 +114,7 @@ public class TriangleCounting extends Configured implements Tool {
             for (LongWritable value : values) {
                 sum += value.get();
             }
-            context.write(new Text("Triangle Counts"), new LongWritable(sum));
+            context.write(new Text("TriangleCounts"), new LongWritable(sum));
         }
     }
 
