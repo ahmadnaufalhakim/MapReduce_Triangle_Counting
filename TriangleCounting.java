@@ -34,7 +34,7 @@ public class TriangleCounting extends Configured implements Tool {
             // Format > key : value -> v u
             for (LongWritable u : values) {
                 valuesCopy.add(u.get());
-                // context.write(new Text(key.toString()), new Text(u.toString()));
+                context.write(new Text(key.toString()), new Text(u.toString()));
             }
             // Format > key : value -> v u,w
             for (int u = 0; u < valuesCopy.size(); u++) {
@@ -42,7 +42,8 @@ public class TriangleCounting extends Configured implements Tool {
                     int compare = valuesCopy.get(u).compareTo(valuesCopy.get(w));
                     if (compare < 0) {
                         // Format key value -> 1 2,3
-                        context.write(new Text(key.toString()), new Text(valuesCopy.get(u).toString() + ',' + valuesCopy.get(w).toString()));
+                        context.write(new Text("Test"), new Text("test"));
+                        context.write(new Text(key.toString()), new Text(valuesCopy.get(u).toString() + "," + valuesCopy.get(w).toString()));
                     }
                 }
             }
