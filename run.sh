@@ -6,7 +6,7 @@ rm TriangleCounting.jar
 rm TriangleCounting*.class
 
 /usr/local/hadoop/bin/hadoop com.sun.tools.javac.Main src/TriangleCounting.java
-jar cf TriangleCounting.jar TriangleCounting*.class
+jar cf TriangleCounting.jar src/TriangleCounting*.class
 
 /usr/local/hadoop/bin/hadoop jar triplet.jar TriangleCounting $1 $2
 /usr/local/hadoop/bin/hdfs dfs -cat /home/ubuntu/MapReduce_Triangle_Counting/output/*
