@@ -34,7 +34,7 @@ public class TriangleCounting extends Configured implements Tool {
             // Format > key : value -> v u
             for (LongWritable u : values) {
                 valuesCopy.add(u.get());
-                context.write(new Text(key.toString()), new Text(u.toString()));
+                // context.write(new Text(key.toString()), new Text(u.toString()));
             }
             // Format > key : value -> v u,w
             for (int u = 0; u < valuesCopy.size(); u++) {
@@ -153,7 +153,7 @@ public class TriangleCounting extends Configured implements Tool {
         jobSecond.setMapperClass(SecondMapper.class);
         jobSecond.setReducerClass(SecondReducer.class);
 
-        // FileInputFormat.addInputPath(jobSecond, new Path(args[0]));
+        FileInputFormat.addInputPath(jobSecond, new Path(args[0]));
         FileInputFormat.addInputPath(jobSecond, new Path(firstmapreducepath));
         FileOutputFormat.setOutputPath(jobSecond, new Path(secondmapreducepath));
 
