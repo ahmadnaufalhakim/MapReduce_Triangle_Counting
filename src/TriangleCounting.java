@@ -33,7 +33,7 @@ public class TriangleCounting extends Configured implements Tool {
             ArrayList<Long> valuesCopy = new ArrayList<Long>();
             for (LongWritable u : values) {
                 valuesCopy.add(u.get());
-                context.write(new Text(key.toString() + ',' + u.toString()));
+                context.write(new Text(key.toString()), new Text(u.toString()));
             }
             for (int u = 0; u < valuesCopy.size(); u++) {
                 for (int w = u; w < valuesCopy.size(); w++) {
@@ -41,7 +41,6 @@ public class TriangleCounting extends Configured implements Tool {
                     if (compare < 0) {
                         // Format key value -> 1 2,3
                         context.write(new Text(key.toString()), new Text(valuesCopy.get(u).toString() + ',' + valuesCopy.get(w).toString()));
-                        // context.write(new Text(valuesCopy.get(u).toString() + ',' + valuesCopy.get(w).toString()), new Text(key.toString()));
                     }
                 }
             }
@@ -59,17 +58,17 @@ public class TriangleCounting extends Configured implements Tool {
                     long v = Long.parseLong(nextpair[0]);
                     long w = Long.parseLong(nextpair[1]);
                     // Key : v,w value : u
-                    context.write(new Text(v.toString()+ ','+w.toString()), new Text(u));
+                    context.write(new Text(Long.toString(v)+ ','+ Long.toString(w)), new Text(Long.toString(u)));
                 }
                 else {
                     long v = Long.parseLong(pair[1]);
 
                     if (u < v) {
                         // Key : u,v value : $
-                        context.write(new Text(u.toString()+ ','+v.toString()), new Text("$"));
+                        context.write(new Text(Long.toString(u)+ ','+Long.toString(v)), new Text("$"));
                     } else {
                         // Key : v,u value : $
-                        context.write(new Text(u.toString()+ ','+v.toString()), new Text("$"));
+                        context.write(new Text(Long.toString(v)+ ','+Long.toString(u)), new Text("$"));
                     }
                 }
             }
