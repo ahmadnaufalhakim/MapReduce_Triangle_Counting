@@ -10,6 +10,8 @@ import org.apache.hadoop.mapreduce.lib.output.*;
 import org.apache.hadoop.util.*;
 
 public class TriangleCounting extends Configured implements Tool {
+    static final String firstmapreducepath = "/home/ubuntu/MapReduce_Triangle_Counting/temp/output-first-mapreduce";
+    static final String secondmapreducepath = "/home/ubuntu/MapReduce_Triangle_Counting/temp/output-second-mapreduce";
     public static class FirstMapper extends Mapper<LongWritable, Text, LongWritable, LongWritable> {
         public void map(LongWritable key, Text text, Context context) throws IOException, InterruptedException {
             String[] pair = text.toString().split("\\s+");
@@ -115,6 +117,9 @@ public class TriangleCounting extends Configured implements Tool {
     }
 
     public int run(String[] args) throws Exception {
+        // Path
+        
+
         // MapReduce 1
         Job jobFirst = new Job(getConf());
         jobFirst.setJobName("mapreduce-1");
@@ -130,7 +135,7 @@ public class TriangleCounting extends Configured implements Tool {
         jobFirst.setReducerClass(FirstReducer.class);
         
         FileInputFormat.addInputPath(jobFirst, new Path(args[0]));
-        FileOutputFormat.setOutputPath(jobFirst, new Path("/user/temp/output/output-mapreduce-first"));
+        FileOutputFormat.setOutputPath(jobFirst, new Path(firstmapreducepath));
 
         // MapReduce 2
         Job jobSecond = new Job(getConf());
@@ -147,8 +152,8 @@ public class TriangleCounting extends Configured implements Tool {
         jobSecond.setReducerClass(SecondReducer.class);
 
         FileInputFormat.addInputPath(jobSecond, new Path(args[0]));
-        FileInputFormat.addInputPath(jobSecond, new Path("/user/temp/output/output-mapreduce-first"));
-        FileOutputFormat.setOutputPath(jobSecond, new Path("/user/temp/output/output-mapreduce-first"));
+        FileInputFormat.addInputPath(jobSecond, new Path(firstmapreducepath));
+        FileOutputFormat.setOutputPath(jobSecond, new Path(secondmapreducepath));
 
         // MapReduce 3
         Job jobThird = new Job(getConf());
@@ -164,7 +169,7 @@ public class TriangleCounting extends Configured implements Tool {
         jobThird.setMapperClass(ThirdMapper.class);
         jobThird.setReducerClass(ThirdReducer.class);
 
-        FileInputFormat.addInputPath(jobThird, new Path("/user/temp/output-mapreduce-2"));
+        FileInputFormat.addInputPath(jobThird, new Path(secondmapreducepath));
         FileOutputFormat.setOutputPath(jobThird, new Path(args[1]));
 
         int ret = jobFirst.waitForCompletion(true) ? 0 : 1;
