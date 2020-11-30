@@ -130,7 +130,7 @@ public class TriangleCounting extends Configured implements Tool {
         jobFirst.setReducerClass(FirstReducer.class);
         
         FileInputFormat.addInputPath(jobFirst, new Path(args[0]));
-        FileOutputFormat.setOutputPath(jobFirst, new Path("/user/temp/output-mapreduce-1"));
+        FileOutputFormat.setOutputPath(jobFirst, new Path("/user/temp/output/output-mapreduce-first"));
 
         // MapReduce 2
         Job jobSecond = new Job(getConf());
@@ -147,8 +147,8 @@ public class TriangleCounting extends Configured implements Tool {
         jobSecond.setReducerClass(SecondReducer.class);
 
         FileInputFormat.addInputPath(jobSecond, new Path(args[0]));
-        FileInputFormat.addInputPath(jobSecond, new Path("/user/temp/output-mapreduce-1"));
-        FileOutputFormat.setOutputPath(jobSecond, new Path("/user/temp/output-mapreduce-2"));
+        FileInputFormat.addInputPath(jobSecond, new Path("/user/temp/output/output-mapreduce-first"));
+        FileOutputFormat.setOutputPath(jobSecond, new Path("/user/temp/output/output-mapreduce-first"));
 
         // MapReduce 3
         Job jobThird = new Job(getConf());
