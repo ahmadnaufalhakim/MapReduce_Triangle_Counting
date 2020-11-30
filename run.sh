@@ -5,7 +5,7 @@
 rm TriangleCounting.jar
 rm TriangleCounting*.class
 
-/usr/local/hadoop/bin/hadoop com.sun.tools.javac.Main TriangleCounting.java
+/usr/local/hadoop/bin/hadoop com.sun.tools.javac.Main src/TriangleCounting.java
 jar cf TriangleCounting.jar TriangleCounting*.class
 
 /usr/local/hadoop/bin/hadoop jar triplet.jar TriangleCounting $1 $2
