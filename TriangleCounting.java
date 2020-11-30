@@ -42,7 +42,7 @@ public class TriangleCounting extends Configured implements Tool {
                     int compare = valuesCopy.get(u).compareTo(valuesCopy.get(w));
                     if (compare > 0) {
                         // Format key value -> 1 2,3
-                        context.write(new Text(key.toString()), new Text(valuesCopy.get(u).toString() + "," + valuesCopy.get(w).toString()));
+                        context.write(new Text(key.toString()), new Text(valuesCopy.get(w).toString() + "," + valuesCopy.get(u).toString()));
                     }
                 }
             }
