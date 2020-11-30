@@ -112,9 +112,9 @@ public class TriangleCounting extends Configured implements Tool {
         public void reduce(LongWritable key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
             long sum = 0;
             for (LongWritable value : values) {
-                sum += value;
+                sum += value.get();
             }
-            context.write(new Text("Triangle Counts", new LongWritable(sum)));
+            context.write(new Text("Triangle Counts"), new LongWritable(sum));
         }
     }
 
