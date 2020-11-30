@@ -103,7 +103,7 @@ public class TriangleCounting extends Configured implements Tool {
         public void map(LongWritable key, Text text, Context context) throws IOException, InterruptedException {
             String[] pair = text.toString().split("\\s+");
             if (pair.length > 1) {
-                context.write(new LongWritable(0), new LongWritable(pair[1]));
+                context.write(new LongWritable(0), new LongWritable(Long.parseLong(pair[1])));
             }
         }
     }
@@ -114,7 +114,7 @@ public class TriangleCounting extends Configured implements Tool {
             for (LongWritable value : values) {
                 sum += value.get();
             }
-            context.write(new Text("TriangleCounts"), new LongWritable(sum));
+            context.write(new Text("Result"), new LongWritable(sum));
         }
     }
 
