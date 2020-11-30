@@ -31,10 +31,12 @@ public class TriangleCounting extends Configured implements Tool {
     public static class FirstReducer extends Reducer<LongWritable, LongWritable, Text, Text> {
         public void reduce(LongWritable key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
             ArrayList<Long> valuesCopy = new ArrayList<Long>();
+            // Format > key : value -> v u
             for (LongWritable u : values) {
                 valuesCopy.add(u.get());
                 context.write(new Text(key.toString()), new Text(u.toString()));
             }
+            // Format > key : value -> v u,w
             for (int u = 0; u < valuesCopy.size(); u++) {
                 for (int w = u; w < valuesCopy.size(); w++) {
                     int compare = valuesCopy.get(u).compareTo(valuesCopy.get(w));
@@ -76,7 +78,7 @@ public class TriangleCounting extends Configured implements Tool {
     }
 
     public static class SecondReducer extends Reducer<Text, Text, LongWritable, LongWritable> {
-        public void reduce(LongWritable key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
+        public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
             LinkedHashSet<String> valueSet = new LinkedHashSet<String>();
             for (Text value : values) {
                 valueSet.add(value.toString());
@@ -91,6 +93,7 @@ public class TriangleCounting extends Configured implements Tool {
                 }
             }
             if (valid) {
+                // 0 sum
                 context.write(new LongWritable(0), new LongWritable(count_sum));
             }
         }
@@ -100,7 +103,7 @@ public class TriangleCounting extends Configured implements Tool {
         public void map(LongWritable key, Text text, Context context) throws IOException, InterruptedException {
             String[] pair = text.toString().split("\\s+");
             if (pair.length > 1) {
-                context.write(new LongWritable(pair[0]), new LongWritable(pair[1]));
+                context.write(new LongWritable(0), new LongWritable(pair[1]));
             }
         }
     }
@@ -150,7 +153,7 @@ public class TriangleCounting extends Configured implements Tool {
         jobSecond.setMapperClass(SecondMapper.class);
         jobSecond.setReducerClass(SecondReducer.class);
 
-        FileInputFormat.addInputPath(jobSecond, new Path(args[0]));
+        // FileInputFormat.addInputPath(jobSecond, new Path(args[0]));
         FileInputFormat.addInputPath(jobSecond, new Path(firstmapreducepath));
         FileOutputFormat.setOutputPath(jobSecond, new Path(secondmapreducepath));
 
